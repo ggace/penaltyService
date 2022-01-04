@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.min.kim.dao.RoomDao">
+	<select id="getRooms" resultType="Room">
+		SELECT * 
+		FROM room
+		ORDER BY id DESC
+	</select>
+	
+	<select id="getRoom" resultType="Room">
+		SELECT * 
+		FROM room
+		WHERE id=#{id}
+	</select>
+	
+	<insert id="insertRoom">
+		INSERT INTO `room`
+		SET title=#{title},
+		regDate = NOW(),
+		updateDate=NOW(),
+		adminId = 1
+		
+	</insert>
+	
+	<delete id="deleteRoom">
+		DELETE FROM `room`
+		WHERE id=#{id}
+	</delete>
+	
+	<update id="updateRoom">
+		UPDATE `room`
+		<set>
+			<if test="adminId != null and adminId != ''">
+				adminId =#{adminId},
+			</if>
+			title=#{title},
+			updateDate = NOW()
+		</set> 
+	</update>
+	
+</mapper>
