@@ -19,14 +19,14 @@ public class RoomController {
 		this.classService = classService;
 	}
 	
-	@RequestMapping("/getRooms")
+	@RequestMapping("/client/room/getRooms")
 	@ResponseBody
 	public ResultData<List<Room>> getRooms() {
 		
 		return classService.getRooms();
 	}
 	
-	@RequestMapping("/getRoom")
+	@RequestMapping("/client/room/getRoom")
 	@ResponseBody
 	public ResultData<Room> getRoom(Integer id) {
 		
@@ -37,7 +37,7 @@ public class RoomController {
 		return classService.getRoom(id);
 	}
 	
-	@RequestMapping("/insertRoom")
+	@RequestMapping("/client/room/insertRoom")
 	@ResponseBody
 	public ResultData<Object> insertRoom(String title, Integer adminId) {
 		
@@ -51,7 +51,7 @@ public class RoomController {
 		return classService.insertRoom(title, adminId);
 	}
 	
-	@RequestMapping("/deleteRoom")
+	@RequestMapping("/client/room/deleteRoom")
 	@ResponseBody
 	public ResultData<Object> deleteRoom(Integer id) {
 		if(id == null) {
@@ -60,7 +60,7 @@ public class RoomController {
 		return classService.deleteRoom(id);
 	}
 	
-	@RequestMapping("/updateRoom")
+	@RequestMapping("/client/room/updateRoom")
 	@ResponseBody
 	public ResultData<Object> updateRoom(Integer id, String title, Integer adminId) {
 		if(id == null) {

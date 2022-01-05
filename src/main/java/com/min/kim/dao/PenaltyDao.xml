@@ -1,0 +1,58 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.min.kim.dao.PenaltyDao">
+	<select id="getPenalties" resultType="Penalty">
+		SELECT *
+		FROM penalty
+	</select>
+	
+	<select id="getPenaltiesWithMoney" resultType="PenaltyWithMoney">
+		SELECT P.*, M.money
+		FROM penalty P 
+		JOIN money M
+		ON P.moneyId = M.id
+	</select>
+	
+	<select id="getPenalty" resultType="Penalty">
+		SELECT *
+		FROM penalty
+		WHERE id=#{id}
+	</select>
+	
+	<select id="getPenaltyWithMoney" resultType="PenaltyWithMoney">
+		SELECT P.*, M.money
+		FROM penalty P 
+		JOIN money M
+		ON P.moneyId = M.id
+		WHERE P.id=#{id}
+	</select>
+	
+	<insert id="insertPenalty">
+		INSERT INTO penalty
+		SET content=#{content},
+		moneyId=#{moneyId},
+		regDate=NOW(),
+		updateDate = NOW(),
+		`type`=#{type}
+	</insert>
+	
+	<delete id="deletePenalty">
+		DELETE FROM penalty
+		WHERE id=#{id}
+	</delete>
+	
+	<update id="updatePenalty">
+		UPDATE `penalty`
+		<set>
+			<if test="content != '' and content!=null">
+				content=#{content},
+			</if>
+			<if test="moneyId != null">
+				moneyId=#{moneyId},
+				type= #{type},
+			</if>
+			
+			updateDate = NOW()
+		</set>
+	</update>
+</mapper>

@@ -1,0 +1,21 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.min.kim.dao.MoneyDao">
+	<select id="getMoneyIdByMoney" resultType="Integer">
+		SELECT id
+		FROM money
+		WHERE money=#{money}
+	</select>
+	
+	<insert id="insertMoney">
+		INSERT INTO money
+		SET money=#{money}
+	</insert>
+	
+	<select id="getLastId" resultType="Integer">
+		SELECT id
+		FROM money
+		ORDER BY id DESC
+		LIMIT 1
+	</select>
+</mapper>
