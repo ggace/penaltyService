@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.min.kim.dto.Room;
+import com.min.kim.dto.RoomWithPw;
 
 
 @Mapper
@@ -19,5 +20,13 @@ public interface RoomDao {
 	public void deleteRoom(int id);
 
 	public void updateRoom(int id, String title, Integer adminId);
+
+	public int getLastId();
+
+	public void setRoomPw(int id, String pw);
+
+	public RoomWithPw getRoomWithPw(Integer id);
+
+	public List<RoomWithPw> getRoomsWithPw();
 
 }

@@ -39,4 +39,37 @@
 		</set> 
 	</update>
 	
+	<select id="getLastId" resultType="Integer">
+		SELECT id
+		FROM `room`
+		ORDER BY id DESC
+		LIMIT 1
+	</select>
+	
+	<insert id="setRoomPw">
+		INSERT INTO `roomPw`
+		<set>
+			roomId=#{id},
+			pw = #{pw}
+		</set>
+	</insert>
+	
+	<select id="getRoomWithPw" resultType="RoomWithPw">
+		SELECT room.*, roomPw.pw
+		FROM room
+		JOIN roomPw
+		ON room.id = roomPw.roomId
+		WHERE room.id = #{id}
+	</select>
+	
+	<select id="getRoomsWithPw" resultType="RoomWithPw">
+		SELECT room.*, roomPw.pw
+		FROM room
+		JOIN roomPw
+		ON room.id = roomPw.roomId
+		ORDER BY id DESC
+	</select>
+	
+	 
+	
 </mapper>
