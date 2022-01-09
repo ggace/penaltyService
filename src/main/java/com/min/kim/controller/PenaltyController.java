@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.kim.dto.Penalty;
-import com.min.kim.dto.PenaltyWithMoney;
 import com.min.kim.dto.ResultData;
 import com.min.kim.service.PenaltyService;
 import com.min.kim.util.Util;
@@ -28,7 +27,7 @@ public class PenaltyController {
 
 	@RequestMapping("/client/penalty/getPenaltiesWithMoney")
 	@ResponseBody
-	public ResultData<List<PenaltyWithMoney>> getPenaltiesWithMoney() {
+	public ResultData<List<Penalty>> getPenaltiesWithMoney() {
 		return penaltyService.getPenaltiesWithMoney();
 	}
 
@@ -43,7 +42,7 @@ public class PenaltyController {
 
 	@RequestMapping("/client/penalty/getPenaltyWithMoney")
 	@ResponseBody
-	public ResultData<PenaltyWithMoney> getPenaltyWithMoney(Integer id) {
+	public ResultData<Penalty> getPenaltyWithMoney(Integer id) {
 		if (Util.isEmpty(id)) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
@@ -52,14 +51,14 @@ public class PenaltyController {
 
 	@RequestMapping("/client/penalty/insertPenalty")
 	@ResponseBody
-	public ResultData<Object> insertPenalty(String content, Integer money) {
+	public ResultData<Object> insertPenalty(int roomId, String content, Integer money) {
 		if (Util.isEmpty(content)) {
 			return ResultData.from("F-nullException", "content를 입력해주세요");
 		}
 		if (Util.isEmpty(money)) {
 			return ResultData.from("F-nullException", "money를 입력해주세요");
 		}
-		return penaltyService.insertPenalty(content, money);
+		return penaltyService.insertPenalty(roomId, content, money);
 	}
 
 	@RequestMapping("/client/penalty/deletePenalty")
@@ -82,4 +81,35 @@ public class PenaltyController {
 		}
 		return penaltyService.updatePenalty(id, content, money);
 	}
+
+	@RequestMapping("/client/penalty/getPenaltyWithRoom")
+	@ResponseBody
+	public ResultData<Penalty> getPenaltyWithRoom(Integer id) {
+		if (Util.isEmpty(id)) {
+			return ResultData.from("F-nullException", "id를 입력해주세요");
+		}
+		return penaltyService.getPenaltyWithRoom(id);
+	}
+	
+	@RequestMapping("/client/penalty/getPenaltiesWithRoom")
+	@ResponseBody
+	public ResultData<List<Penalty>> getPenaltiesWithRoom() {
+		return penaltyService.getPenaltiesWithRoom();
+	}
+	
+	@RequestMapping("/client/penalty/getPenaltyWithRoomAndMoney")
+	@ResponseBody
+	public ResultData<Penalty> getPenaltyWithRoomAndMoney(Integer id) {
+		if (Util.isEmpty(id)) {
+			return ResultData.from("F-nullException", "id를 입력해주세요");
+		}
+		return penaltyService.getPenaltyWithRoomAndMoney(id);
+	}
+	
+	@RequestMapping("/client/penalty/getPenaltiesWithRoomAndMoney")
+	@ResponseBody
+	public ResultData<List<Penalty>> getPenaltiesWithRoomAndMoney() {
+		return penaltyService.getPenaltiesWithRoomAndMoney();
+	}
+	
 }

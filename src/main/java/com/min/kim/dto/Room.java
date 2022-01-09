@@ -13,4 +13,6 @@ public class Room {
 	private String regDate;
 	private String updateDate;
 	private int adminId;
+	
+	private String pw;
 }

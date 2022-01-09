@@ -14,4 +14,7 @@ public class Penalty {
 	private String regDate;
 	private String updateDate;
 	private boolean type;
+	
+	private Integer money;
+	private Integer roomId;
 }

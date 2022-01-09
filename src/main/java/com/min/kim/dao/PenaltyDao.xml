@@ -6,7 +6,7 @@
 		FROM penalty
 	</select>
 	
-	<select id="getPenaltiesWithMoney" resultType="PenaltyWithMoney">
+	<select id="getPenaltiesWithMoney" resultType="Penalty">
 		SELECT P.*, M.money
 		FROM penalty P 
 		JOIN money M
@@ -19,7 +19,7 @@
 		WHERE id=#{id}
 	</select>
 	
-	<select id="getPenaltyWithMoney" resultType="PenaltyWithMoney">
+	<select id="getPenaltyWithMoney" resultType="Penalty">
 		SELECT P.*, M.money
 		FROM penalty P 
 		JOIN money M
@@ -55,4 +55,48 @@
 			updateDate = NOW()
 		</set>
 	</update>
+	
+	<select id="getLastID" resultType="Integer">
+		SELECT *
+		FROM penalty
+		ORDER BY id DESC
+		LIMIT 1
+	</select>
+	
+	<select id="getPenaltyWithRoom" resultType="Penalty">
+		SELECT P.*, R.roomId
+		FROM penalty P
+		JOIN penaltyInRoom R
+		ON P.id = R.penaltyId
+		WHERE P.id = #{id}
+	</select>
+	
+	<select id="getPenaltiesWithRoom" resultType="Penalty">
+		SELECT P.*, R.roomId
+		FROM penalty P
+		JOIN penaltyInRoom R
+		ON P.id = R.penaltyId
+		ORDER BY id DESC
+	</select>
+	
+	<select id="getPenaltyWithRoomAndMoney" resultType="Penalty">
+		SELECT P.*, M.money, R.roomId
+		FROM penalty P
+		JOIN penaltyInRoom R
+		ON P.id = R.penaltyId
+		JOIN money M
+		ON P.moneyId = M.id
+		WHERE P.id = #{id}
+	</select>
+	
+	<select id="getPenaltiesWithRoomAndMoney" resultType="Penalty">
+		SELECT P.*, M.money, R.roomId
+		FROM penalty P
+		JOIN penaltyInRoom R
+		ON P.id = R.penaltyId
+		JOIN money M
+		ON P.moneyId = M.id
+		ORDER BY id DESC
+	</select>
+	
 </mapper>

@@ -1,6 +1,5 @@
 package com.min.kim.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.min.kim.dao.RoomDao;
 import com.min.kim.dto.ResultData;
 import com.min.kim.dto.Room;
-import com.min.kim.dto.RoomWithPw;
 
 @Service
 public class RoomService {
@@ -59,16 +57,16 @@ public class RoomService {
 		return ResultData.from("S-1", "방 수정에 성공했습니다.");
 	}
 
-	public ResultData<RoomWithPw> getRoomWithPw(Integer id) {
-		RoomWithPw room = roomDao.getRoomWithPw(id);
+	public ResultData<Room> getRoomWithPw(Integer id) {
+		Room room = roomDao.getRoomWithPw(id);
 		if(room == null) {
 			return ResultData.from("F-nullException", "방이 존재하지 않습니다.");
 		}
 		return ResultData.from("S-1", "방들입니다.", "room", room);
 	}
 
-	public ResultData<List<RoomWithPw>> getRoomsWithPw() {
-		List<RoomWithPw> rooms = roomDao.getRoomsWithPw();
+	public ResultData<List<Room>> getRoomsWithPw() {
+		List<Room> rooms = roomDao.getRoomsWithPw();
 		return ResultData.from("S-1", "방들입니다.", "rooms", rooms);
 	}
 

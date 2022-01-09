@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.kim.dto.ResultData;
 import com.min.kim.dto.Room;
-import com.min.kim.dto.RoomWithPw;
 import com.min.kim.service.RoomService;
 
 @Controller
@@ -29,7 +28,7 @@ public class RoomController {
 	
 	@RequestMapping("/client/room/getRoomsWithPw")
 	@ResponseBody
-	public ResultData<List<RoomWithPw>> getRoomsWithPw() {
+	public ResultData<List<Room>> getRoomsWithPw() {
 		
 		return classService.getRoomsWithPw();
 	}
@@ -47,7 +46,7 @@ public class RoomController {
 	
 	@RequestMapping("/client/room/getRoomWithPw")
 	@ResponseBody
-	public ResultData<RoomWithPw> getRoomWithPw(Integer id) {
+	public ResultData<Room> getRoomWithPw(Integer id) {
 		
 		if(id == null) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");

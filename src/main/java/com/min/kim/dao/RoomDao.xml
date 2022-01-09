@@ -54,7 +54,7 @@
 		</set>
 	</insert>
 	
-	<select id="getRoomWithPw" resultType="RoomWithPw">
+	<select id="getRoomWithPw" resultType="Room">
 		SELECT room.*, roomPw.pw
 		FROM room
 		JOIN roomPw
@@ -62,7 +62,7 @@
 		WHERE room.id = #{id}
 	</select>
 	
-	<select id="getRoomsWithPw" resultType="RoomWithPw">
+	<select id="getRoomsWithPw" resultType="Room">
 		SELECT room.*, roomPw.pw
 		FROM room
 		JOIN roomPw
