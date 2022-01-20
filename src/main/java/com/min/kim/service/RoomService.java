@@ -70,4 +70,9 @@ public class RoomService {
 		return ResultData.from("S-1", "방들입니다.", "rooms", rooms);
 	}
 
+	public ResultData<List<Room>> getRoomsWithAdmin() {
+		List<Room> rooms = roomDao.getRoomsWithAdmin();
+		return ResultData.from("S-1", "방들입니다.", "rooms", rooms);
+	}
+
 }

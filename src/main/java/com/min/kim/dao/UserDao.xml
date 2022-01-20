@@ -1,0 +1,30 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.min.kim.dao.UserDao">
+	<select id="getUser" resultType="User">
+		SELECT id, loginId, nickname, email, regDate, updateDate
+		FROM `member`
+		WHERE delStatus = 0
+		AND id = #{id} 
+	</select>
+	
+	<select id="getUserByLoginId" resultType="User">
+		SELECT id, loginId, loginPw, nickname, email, regDate, updateDate
+		FROM `member`
+		WHERE delStatus = 0
+		AND loginId = #{loginId}
+	</select>
+	
+	<insert id="join">
+		INSERT INTO `member`
+		SET loginId = #{loginId},
+		loginPw = #{loginPw},
+		nickname = #{nickname},
+		email = #{email},
+		regDate = NOW(),
+		updateDate = NOW(),
+		delStatus = 0
+		
+	</insert>
+	
+</mapper>

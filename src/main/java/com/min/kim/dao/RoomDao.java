@@ -28,4 +28,6 @@ public interface RoomDao {
 
 	public List<Room> getRoomsWithPw();
 
+	public List<Room> getRoomsWithAdmin();
+
 }

@@ -20,22 +20,20 @@
 
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-<!-- vue -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
 
-<!-- 사이트 공통 CSS -->
-<link rel="stylesheet" href="/resources/common.css" />
-<!-- 사이트 공통 JS -->
-<script src="/resources/common.js" defer="defer"></script>
+<!-- babel -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<link rel="stylesheet" href="/script/header.css" />
+<!-- react -->
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
 
 </head>
 <body>
 	
 	
-	<header class="h-20 mt-2 border-b border-gray-400">
+	<header class="h-20 pt-2 border-b border-gray-400" style="position: fixed;  top: 0; left: 0;  height: 100px;  width: 100%;  background-color: #f4f4f4;">
 		<section class="flex h-20 mx-5 items-center block">
 			<button class="btn btn-circle btn-ghost">
 		      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">           
@@ -67,4 +65,9 @@
 		</section>
 		
 	</header>
+	
+	<div class="my-3 h-20"></div>
+	
+	
+	
 	

@@ -33,6 +33,13 @@ public class RoomController {
 		return classService.getRoomsWithPw();
 	}
 	
+	@RequestMapping("/client/room/getRoomsWithAdmin")
+	@ResponseBody
+	public ResultData<List<Room>> getRoomsWithAdmin() {
+		
+		return classService.getRoomsWithAdmin();
+	}
+	
 	@RequestMapping("/client/room/getRoom")
 	@ResponseBody
 	public ResultData<Room> getRoom(Integer id) {

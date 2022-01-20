@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Room {
+public class User {
 	private int id;
-	private String title;
+	private String loginId;
+	private String loginPw;
+	private String nickname;
+	private String email;
 	private String regDate;
 	private String updateDate;
-	private int adminId;
-	private String adminName;
-	
-	private String pw;
+	private boolean delStatus;
+	private String delDate;
 }
