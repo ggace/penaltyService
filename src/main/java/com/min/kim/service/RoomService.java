@@ -38,6 +38,9 @@ public class RoomService {
 		long seed = System.currentTimeMillis();
 
 		roomDao.setRoomPw(id, String.valueOf(seed));
+		
+		roomDao.insertRoomMember(adminId, id);
+		
 		return ResultData.from("S-1", "방 추가에 성공했습니다.");
 	}
 
@@ -62,7 +65,7 @@ public class RoomService {
 		if(room == null) {
 			return ResultData.from("F-nullException", "방이 존재하지 않습니다.");
 		}
-		return ResultData.from("S-1", "방들입니다.", "room", room);
+		return ResultData.from("S-1", "방입니다.", "room", room);
 	}
 
 	public ResultData<List<Room>> getRoomsWithPw() {
@@ -73,6 +76,12 @@ public class RoomService {
 	public ResultData<List<Room>> getRoomsWithAdmin() {
 		List<Room> rooms = roomDao.getRoomsWithAdmin();
 		return ResultData.from("S-1", "방들입니다.", "rooms", rooms);
+	}
+
+	public ResultData<List<Room>> getRoomByUserId(Integer userId) {
+		List<Room> rooms = roomDao.getRoomsByUserId(userId);
+		
+		return ResultData.from("S-1", "방입니다.", "rooms", rooms);
 	}
 
 }

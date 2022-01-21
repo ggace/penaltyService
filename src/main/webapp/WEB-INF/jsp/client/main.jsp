@@ -8,20 +8,25 @@
 
 <div id="root" style="margin-top: 24px; margin-left: 24px"></div>
 
-
 <script type="text/babel" src="/script/Room.js" ></script>
 
 <script type="text/babel">
 	
-	fetch("/client/room/getRoomsWithAdmin")
+	fetch("/client/room/getRoomByUserId")
 		.then(res => res.json())
 		.then(
         	(result) => {
-          		const element = result.data.map((room) => {
+          		const elementMain = result.data.map((room) => {
 					return <Room title={room.title} adminName={room.adminName}></Room>
 				});
+				const elementSideBar = result.data.map((room) => {
+					return <a href="#" class="w3-bar-item w3-button truncate">{room.title} - {room.adminName}</a>
+				});
+				
 				const root = document.getElementById('root');
-				ReactDOM.render(<div style={{display: "flex", flexWrap: "wrap"}}>{element}</div>, root);
+				ReactDOM.render(<div style={{display: "flex", flexWrap: "wrap"}}>{elementMain}</div>, root);
+				const sideBarRoot = document.getElementById('sidebarRoot');				
+				ReactDOM.render(<div style={{display: "flex", flexWrap: "wrap"}}>{elementSideBar}</div>, sideBarRoot);
 			},
         // 주의: 컴포넌트에 있는 실제 버그로 인해 발생한 예외를
         // 놓치지 않고 처리하기 위해서는

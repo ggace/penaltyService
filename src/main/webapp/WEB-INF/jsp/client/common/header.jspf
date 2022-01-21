@@ -28,14 +28,83 @@
 <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
+<!-- sidebar -->
+<script defer="defer">
+	function w3_open() {
+	  document.getElementById("mySidebar").style.width = "400px";
+	  document.getElementById("mySidebar").style.display = "block";
+	}
+
+	function w3_close() {
+	  document.getElementById("mySidebar").style.display = "none";
+	}
+	
+</script>
+
+<!-- addpopup -->
+<style>
+#popup_layer {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4);} 
+/*팝업 박스*/
+.popup_box{position: relative;top:50%;left:50%; width:550px;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+/*컨텐츠 영역*/
+.popup_box .popup_cont {padding:50px;line-height:1.4rem;font-size:14px;word-break: break-word;}
+.popup_box .popup_cont h2 {padding:15px 0;color:#333;margin:0;}
+.popup_box .popup_cont p{ border-top: 1px solid #666;padding-top: 30px;}
+/*버튼영역*/
+.popup_box .popup_btn {display:table;table-layout: fixed;width:100%;height:70px;background:#5d5d5d;word-break: break-word;}
+.popup_box .popup_btn a {position: relative; display: table-cell; height:70px; color:#fff; font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#102c5c;}
+.popup_box .popup_btn a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
+.popup_box .popup_btn a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
+.popup_box .popup_btn a.close_day {background:#5d5d5d;}
+.popup_box .popup_btn a.close_day:before, .popup_box .popup_btn a.close_day:after{display:none;}
+/*오버레이 뒷배경*/
+.popup_overlay{position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);} 
+</style>
+
+
+<script type="text/javascript" >
+
+$(function(){
+	$(".popup_box").draggable({containment:'parent', scroll:false}); // 레이어 팝업 창 드래그 가능
+	//{containment:'parent', scroll:false} 화면 영역 밖으로 드래그 안됌.
+    document.getElementById("popup_layer").style.display = "block";            
+	
+	});
+
+//열기
+function openPop() { 
+	document.getElementById("popup_layer").style.display = "block";
+}
+
+//그냥 닫기버튼 스크립트
+function closePop() { 
+	document.getElementById("popup_layer").style.display = "none";
+}
+$(function(){
+	$(".popup_box").draggable({containment:'parent', scroll:false}); // 레이어 팝업 창 드래그 가능
+	
+                
+	
+	});
+</script>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
 <body>
 	
-	
+	<!-- Sidebar -->
+	<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+	  <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+	  <div id="sidebarRoot">
+	  	
+	  </div>
+	  
+	  
+	</div>
 	<header class="h-20 pt-2 border-b border-gray-400" style="position: fixed;  top: 0; left: 0;  height: 100px;  width: 100%;  background-color: #f4f4f4;">
 		<section class="flex h-20 mx-5 items-center block">
-			<button class="btn btn-circle btn-ghost">
+			<button class="btn btn-circle btn-ghost" onclick="w3_open()" >
 		      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">           
 		        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>               
 		      </svg>
@@ -52,7 +121,7 @@
 			<div class="flex-grow"></div>
 			
 			
-			<button class="btn btn-circle btn-ghost w-14 h-14 flex justify-center w-12 h-12">
+			<button class="btn btn-circle btn-ghost w-14 h-14 flex justify-center w-12 h-12" onclick="openPop()">
 			    <svg width="24" height="24">
 		            <path d="M0 11 L11 11 L11 0 L13 0 L13 11 L24 11 L24 13 L13 13 L13 24 L11 24 L11 13 L0 13 Z"></path>
 		        </svg>
@@ -65,7 +134,22 @@
 		</section>
 		
 	</header>
-	
+	<div id="popup_layer" style="display: none">
+	  <div class="popup_box">
+	      <!--팝업 컨텐츠 영역-->
+	      <div class="popup_cont">
+	          <h2>Write the room's id and pw</h2>
+	          id : <input type="input"/><br>
+			  pw : <input type="password"/>
+	      </div>
+	      <!--팝업 버튼 영역-->
+	      <div class="popup_btn">
+	          
+	          <!-- <a id="chk_today" href="javascript:closeToday();" class="close_day">Do not open for 7 days</a>-->
+	          <a href="javascript:closePop();">Close</a>
+	      </div>
+	  </div>
+	</div>
 	<div class="my-3 h-20"></div>
 	
 	

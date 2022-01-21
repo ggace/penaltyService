@@ -15,6 +15,8 @@ public interface RoomDao {
 	public Room getRoom(int id);
 
 	public void insertRoom(String title, int adminId);
+	
+	public void insertRoomMember(int memberId, int roomId);
 
 	public void deleteRoom(int id);
 
@@ -29,5 +31,7 @@ public interface RoomDao {
 	public List<Room> getRoomsWithPw();
 
 	public List<Room> getRoomsWithAdmin();
+
+	public List<Room> getRoomsByUserId(Integer userId);
 
 }

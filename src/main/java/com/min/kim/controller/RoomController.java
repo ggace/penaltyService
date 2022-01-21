@@ -2,6 +2,8 @@ package com.min.kim.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.min.kim.dto.ResultData;
 import com.min.kim.dto.Room;
 import com.min.kim.service.RoomService;
+import com.min.kim.util.Util;
 
 @Controller
 public class RoomController {
@@ -17,6 +20,21 @@ public class RoomController {
 	
 	public RoomController(RoomService classService) {
 		this.classService = classService;
+	}
+	@RequestMapping("/client/room/getRoomByUserId")
+	@ResponseBody
+	public ResultData<List<Room>> getRoomByUserId(HttpSession session) {
+		int userId;
+		Integer loginedId = (Integer) session.getAttribute("loginedId");
+		if(loginedId != null) {
+			userId = loginedId;
+		}
+		else {
+			return ResultData.from("F-logined", "로그인을 먼저 해주세요");
+		}
+			
+		
+		return classService.getRoomByUserId(userId);
 	}
 	
 	@RequestMapping("/client/room/getRooms")

@@ -19,8 +19,16 @@
 		SET title=#{title},
 		regDate = NOW(),
 		updateDate=NOW(),
-		adminId = 1
+		adminId = #{adminId}
 		
+	</insert>
+	
+	<insert id="insertRoomMember">
+		INSERT INTO `roomMember`
+		SET memberId=#{memberId},
+		roomId = #{roomId},
+		regDate = NOW(),
+		updateDate=NOW()
 	</insert>
 	
 	<delete id="deleteRoom">
@@ -75,6 +83,18 @@
 		FROM room AS R
 		JOIN MEMBER AS M
 		ON R.adminId = M.id	
+	</select>
+	
+	<select id="getRoomsByUserId" resultType="Room">
+		SELECT r.*, m2.nickname AS adminName
+		FROM `member` AS  m
+		JOIN `roomMember` AS rm
+		ON m.id = rm.memberId
+		JOIN `room` AS r
+		ON r.id = rm.roomId
+		JOIN `member` AS m2
+		ON m2.id = r.adminId
+		WHERE m.id = #{userId};
 	</select>
 	 
 	
