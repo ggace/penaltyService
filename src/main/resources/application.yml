@@ -11,5 +11,6 @@ spring:
     username: sbsst
     password: sbs123414
   
+  
 mybatis:
   type-aliases-package: com.min.kim.dto

@@ -9,7 +9,7 @@ public class Util {
 			if(object == "") {
 				return true;
 			}
-		}
+		};
 		
 		return false;
 		
