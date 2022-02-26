@@ -2,87 +2,146 @@ package com.min.kim.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.min.kim.dao.RoomDao;
 import com.min.kim.dto.ResultData;
 import com.min.kim.dto.Room;
 import com.min.kim.service.RoomService;
-import com.min.kim.util.Util;
 
 @Controller
 public class RoomController {
 	
-	private RoomService classService;
+	private RoomService roomService;
 	
-	public RoomController(RoomService classService) {
-		this.classService = classService;
+	public RoomController(RoomService roomService) {
+		this.roomService = roomService;
 	}
-	@RequestMapping("/client/room/getRoomByUserId")
+	@RequestMapping("/admin/room/getRoomByUserId")
 	@ResponseBody
-	public ResultData<List<Room>> getRoomByUserId(HttpSession session) {
-		int userId;
-		Integer loginedId = (Integer) session.getAttribute("loginedId");
-		if(loginedId != null) {
-			userId = loginedId;
+	public ResultData<List<Room>> getRoomByUserId(HttpSession session, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
 		}
-		else {
-			return ResultData.from("F-logined", "로그인을 먼저 해주세요");
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
 		}
+		
+		
+		Integer loginedId = (Integer)request.getAttribute("loginedId");
+		
 			
 		
-		return classService.getRoomByUserId(userId);
+		return roomService.getRoomByUserId(loginedId);
 	}
 	
-	@RequestMapping("/client/room/getRooms")
+	@RequestMapping("/admin/room/getRooms")
 	@ResponseBody
-	public ResultData<List<Room>> getRooms() {
+	public ResultData<List<Room>> getRooms(HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
 		
-		return classService.getRooms();
-	}
-	
-	@RequestMapping("/client/room/getRoomsWithPw")
-	@ResponseBody
-	public ResultData<List<Room>> getRoomsWithPw() {
 		
-		return classService.getRoomsWithPw();
+		return roomService.getRooms();
 	}
 	
-	@RequestMapping("/client/room/getRoomsWithAdmin")
+	@RequestMapping("/admin/room/getRoomsWithAdmin")
 	@ResponseBody
-	public ResultData<List<Room>> getRoomsWithAdmin() {
+	public ResultData<List<Room>> getRoomsWithAdmin(HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
 		
-		return classService.getRoomsWithAdmin();
+		
+		return roomService.getRoomsWithAdmin();
 	}
 	
-	@RequestMapping("/client/room/getRoom")
+	@RequestMapping("/admin/room/getRoom")
 	@ResponseBody
-	public ResultData<Room> getRoom(Integer id) {
+	public ResultData<Room> getRoom(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		Integer loginedId = (Integer)(request.getAttribute("loginedId"));
 		
 		if(id == null) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		
-		return classService.getRoom(id);
+		if(!(boolean) roomService.checkUserInRoom(loginedId, id).getData()) {
+			return ResultData.from("F-notmember", "가입 유저가 아닙니다.");
+		}
+		
+		return roomService.getRoom(id);
 	}
-	
-	@RequestMapping("/client/room/getRoomWithPw")
+	@RequestMapping("/admin/room/getRoomWithAdminInfo")
 	@ResponseBody
-	public ResultData<Room> getRoomWithPw(Integer id) {
+	public ResultData<Room> getRoomWithAdminInfo(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		Integer loginedId = (Integer)(request.getAttribute("loginedId"));
 		
 		if(id == null) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		
-		return classService.getRoomWithPw(id);
+		if(!(boolean) roomService.checkUserInRoom(loginedId, id).getData()) {
+			return ResultData.from("F-notmember", "가입 유저가 아닙니다.");
+		}
+		
+		return roomService.getRoomWithAdminInfo(id);
+	}
+	@RequestMapping("/admin/room/getRoomWithPw")
+	@ResponseBody
+	public ResultData<Room> getRoomWithPw(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		Integer loginedId = (Integer)(request.getAttribute("loginedId"));
+		
+		
+		if(id == null) {
+			return ResultData.from("F-nullException", "id를 입력해주세요");
+		}
+		
+		if(!(boolean) roomService.checkUserInRoom(loginedId, id).getData()) {
+			return ResultData.from("F-notmember", "가입 유저가 아닙니다.");
+		}
+		
+		return roomService.getRoomWithPw(id);
 	}
 	
-	@RequestMapping("/client/room/insertRoom")
+	@RequestMapping("/admin/room/insertRoom")
 	@ResponseBody
-	public ResultData<Object> insertRoom(String title, Integer adminId) {
+	public ResultData<Object> insertRoom(String title, Integer adminId, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
 		
 		if(title == null || title == "") {
 			return ResultData.from("F-nullException", "title을 입력해주세요");
@@ -91,27 +150,67 @@ public class RoomController {
 			return ResultData.from("F-nullException", "adminId를 입력해주세요");
 		}
 		
-		return classService.insertRoom(title, adminId);
+		return roomService.insertRoom(title, adminId);
 	}
 	
-	@RequestMapping("/client/room/deleteRoom")
+	@RequestMapping("/admin/room/enterRoom")
 	@ResponseBody
-	public ResultData<Object> deleteRoom(Integer id) {
+	public ResultData<Object> enterRoom(Integer roomId, String pw, HttpSession session, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
+		Integer loginedId = (Integer)request.getAttribute("loginedId");
+		if(roomId == null) {
+			return ResultData.from("F-nullException", "roomId을 입력해주세요");
+		}
+		else if(pw == null || pw == "") {
+			return ResultData.from("F-nullException", "pw를 입력해주세요");
+		}
+		
+		
+		return roomService.insertRoomMember(roomId, pw, loginedId);
+	}
+	
+	@RequestMapping("/admin/room/deleteRoom")
+	@ResponseBody
+	public ResultData<Object> deleteRoom(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		Integer loginedId = (Integer)request.getAttribute("loginedId");
+
 		if(id == null) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
-		return classService.deleteRoom(id);
+		return roomService.deleteRoom(id, (boolean)roomService.checkUserAdminInRoom(loginedId, id).getData());
 	}
 	
-	@RequestMapping("/client/room/updateRoom")
+	@RequestMapping("/admin/room/updateRoom")
 	@ResponseBody
-	public ResultData<Object> updateRoom(Integer id, String title, Integer adminId) {
+	public ResultData<Object> updateRoom(Integer id, String title, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
+		//admin필요
+		Integer loginedId = (Integer)request.getAttribute("loginedId");
+		
 		if(id == null) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		else if(title == null || title == "") {
 			return ResultData.from("F-nullException", "title을 입력해주세요");
 		}
-		return classService.updateRoom(id, title, adminId);
+		return roomService.updateRoom(id, title, (boolean)roomService.checkUserAdminInRoom(loginedId, id).getData());
 	}
 }

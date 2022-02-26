@@ -1,21 +1,23 @@
 class Room extends React.Component {
 	render() {
+		
 		const style = {
 			width: "302px",
-			height: "296px",
+			height: "24vh",
 			border: "1px solid gray",
 			borderRadius: "15px",
-			marginRight: "24px",
-			marginBottom:"24px",
+			marginRight: "40px",
+			marginBottom:"35px",
 			display: "flex",
 			alignItems:"flex-start",
-			flexDirection: "column"
+			flexDirection: "column",
+			boxShadow: "3px 3px 4px #5f5f5f"
 		}
 		return (
   		<div className="room" style={style}>
-  			<RoomHeader title={this.props.title} adminName={this.props.adminName}></RoomHeader>
-  			<span className="flex-grow"></span>
-    		<RoomFooter></RoomFooter>
+  			<RoomHeader title={this.props.title} adminName={this.props.adminName} roomId={this.props.roomId}></RoomHeader>
+  			<div className="flex-grow"></div>
+  			<RoomFooter></RoomFooter>
   		</div>
 		);
 	}
@@ -29,7 +31,7 @@ class RoomHeader extends React.Component{
 	      	style : {
 				width: "300px",
 				height: "100px",
-				backgroundColor: "skyblue",
+				backgroundColor: "#99ceff",
 				borderTopLeftRadius: "15px",
 				borderTopRightRadius: "15px",
 				display: "flex",
@@ -39,13 +41,13 @@ class RoomHeader extends React.Component{
 	    };
 	  }
 	render() {
-		
+		let aHref = "../client/detail?id=" + this.props.roomId
 		return (
   		<div className="roomHeader" style={this.state.style}>
   			
   			<span style={{fontSize: "1.375rem", width: "268px", height: "48px", textAlign:"left", display: "flex"}}>
   				<div className="flex" style={{alignItems: "center", width: "238px"}}>
-  					<a href="#" className="hover:underline" style={{color: "black", display: "inline-block", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap", width: "100%"}}>
+  					<a href={aHref} className="hover:underline" style={{color: "black", display: "inline-block", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap", width: "100%"}}>
   						{this.props.title}
   						<div style={{fontSize: "0.8125rem"}}>{this.props.adminName}</div>
   					</a>

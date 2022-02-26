@@ -43,8 +43,33 @@ public class RoomService {
 		
 		return ResultData.from("S-1", "방 추가에 성공했습니다.");
 	}
+	
+	public ResultData insertRoomMember(int roomId, String pw, int userId) {
+		
+		Room room = roomDao.getRoomWithPw(roomId);
+		
+		if(room == null) {
+			return ResultData.from("F-nullException", "방이 존재하지 않습니다.");
+		}
+		else if(!room.getPw().equals(pw)) {
+			return ResultData.from("F-nullException", "비밀번호가 일치하지 않습니다.");
+		}
+		
+		Integer checkMember = roomDao.checkRoomMember(userId, roomId);
+		
+		if(checkMember == 1) {
+			return ResultData.from("F-alreadyWorked", "이미 가입된 방입니다.");
+		}
+		
+		roomDao.insertRoomMember(userId, roomId);
+		
+		return ResultData.from("S-1", "방 가입에 성공했습니다.");
+	}
 
-	public ResultData<Object> deleteRoom(int id) {
+	public ResultData<Object> deleteRoom(int id, boolean isAdmin) {
+		if(!isAdmin) {
+			return ResultData.from("F-logined", "어드민이 아닙니다.");
+		}
 		if(getRoom(id).getData() == null) {
 			return ResultData.from("F-nullException", "방이 존재하지 않습니다.");
 		}
@@ -52,11 +77,14 @@ public class RoomService {
 		return ResultData.from("S-1", "방 삭제에 성공했습니다.");
 	}
 
-	public ResultData<Object> updateRoom(int id, String title, Integer adminId) {
+	public ResultData<Object> updateRoom(int id, String title, boolean isAdmin) {
 		if(getRoom(id).getData() == null) {
 			return ResultData.from("F-nullException", "방이 존재하지 않습니다.");
 		}
-		roomDao.updateRoom(id, title, adminId);
+		if(!isAdmin) {
+			return ResultData.from("F-logined", "어드민이 아닙니다.");
+		}
+		roomDao.updateRoom(id, title);
 		return ResultData.from("S-1", "방 수정에 성공했습니다.");
 	}
 
@@ -82,6 +110,27 @@ public class RoomService {
 		List<Room> rooms = roomDao.getRoomsByUserId(userId);
 		
 		return ResultData.from("S-1", "방입니다.", "rooms", rooms);
+	}
+
+	public ResultData<Room> getRoomWithAdminInfo(Integer id) {
+		Room room = roomDao.getRoomWithAdminInfo(id);
+		if(room == null) {
+			return ResultData.from("F-nullException", "방이 존재하지 않습니다.");
+		}
+		return ResultData.from("S-1", "방입니다.", "room", room);
+	}
+	
+	public ResultData checkUserInRoom(int userId, int roomId) {
+		
+		boolean isMember = roomDao.checkUserInRoom(userId, roomId); 
+		
+		return ResultData.from("S-1", "방에 구성원입니다.", "isMember", isMember);
+	}
+	public ResultData checkUserAdminInRoom(int userId, int roomId) {
+		
+		boolean isAdmin = roomDao.checkUserAdminInRoom(userId, roomId); 
+		
+		return ResultData.from("S-1", "방에 구성원입니다.", "isMember", isAdmin);
 	}
 
 }

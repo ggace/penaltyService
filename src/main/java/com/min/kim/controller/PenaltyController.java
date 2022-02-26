@@ -2,6 +2,8 @@ package com.min.kim.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,70 +11,116 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.min.kim.dto.Penalty;
 import com.min.kim.dto.ResultData;
 import com.min.kim.service.PenaltyService;
+import com.min.kim.service.RoomService;
 import com.min.kim.util.Util;
 
 @Controller
 public class PenaltyController {
 	private PenaltyService penaltyService;
-
+	
 	public PenaltyController(PenaltyService penaltyService) {
 		this.penaltyService = penaltyService;
 	}
 
-	@RequestMapping("/client/penalty/getPenalties")
+	@RequestMapping("/admin/penalty/getPenalties")
 	@ResponseBody
-	public ResultData<List<Penalty>> getPenalties() {
+	public ResultData<List<Penalty>> getPenalties(HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		return penaltyService.getPenalties();
 	}
 
-	@RequestMapping("/client/penalty/getPenaltiesWithMoney")
+	@RequestMapping("/admin/penalty/getPenaltiesWithMoney")
 	@ResponseBody
-	public ResultData<List<Penalty>> getPenaltiesWithMoney() {
+	public ResultData<List<Penalty>> getPenaltiesWithMoney(HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		return penaltyService.getPenaltiesWithMoney();
 	}
 
-	@RequestMapping("/client/penalty/getPenalty")
+	@RequestMapping("/admin/penalty/getPenalty")
 	@ResponseBody
-	public ResultData<Penalty> getPenalty(Integer id) {
+	public ResultData<Penalty> getPenalty(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
 		if (Util.isEmpty(id)) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		return penaltyService.getPenalty(id);
 	}
 
-	@RequestMapping("/client/penalty/getPenaltyWithMoney")
+	@RequestMapping("/admin/penalty/getPenaltyWithMoney")
 	@ResponseBody
-	public ResultData<Penalty> getPenaltyWithMoney(Integer id) {
+	public ResultData<Penalty> getPenaltyWithMoney(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		if (Util.isEmpty(id)) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		return penaltyService.getPenaltyWithMoney(id);
 	}
 
-	@RequestMapping("/client/penalty/insertPenalty")
+	@RequestMapping("/admin/penalty/insertPenalty")
 	@ResponseBody
-	public ResultData<Object> insertPenalty(int roomId, String content, Integer money) {
+	public ResultData<Object> insertPenalty(String content, Integer money, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		if (Util.isEmpty(content)) {
 			return ResultData.from("F-nullException", "content를 입력해주세요");
 		}
 		if (Util.isEmpty(money)) {
 			return ResultData.from("F-nullException", "money를 입력해주세요");
 		}
-		return penaltyService.insertPenalty(roomId, content, money);
+		return penaltyService.insertPenalty(content, money);
 	}
 
-	@RequestMapping("/client/penalty/deletePenalty")
+	@RequestMapping("/admin/penalty/deletePenalty")
 	@ResponseBody
-	public ResultData<Object> deletePenalty(Integer id) {
+	public ResultData<Object> deletePenalty(Integer id, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		if (Util.isEmpty(id)) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		return penaltyService.deletePenalty(id);
 	}
 
-	@RequestMapping("/client/penalty/updatePenalty")
+	@RequestMapping("/admin/penalty/updatePenalty")
 	@ResponseBody
-	public ResultData<Object> updatePenalty(Integer id, String content, Integer money) {
+	public ResultData<Object> updatePenalty(Integer id, String content, Integer money, HttpServletRequest request) {
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		if (Util.isEmpty(id)) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
@@ -80,36 +128,6 @@ public class PenaltyController {
 			return ResultData.from("F-nullException", "content 또는 money를 입력해주세요");
 		}
 		return penaltyService.updatePenalty(id, content, money);
-	}
-
-	@RequestMapping("/client/penalty/getPenaltyWithRoom")
-	@ResponseBody
-	public ResultData<Penalty> getPenaltyWithRoom(Integer id) {
-		if (Util.isEmpty(id)) {
-			return ResultData.from("F-nullException", "id를 입력해주세요");
-		}
-		return penaltyService.getPenaltyWithRoom(id);
-	}
-	
-	@RequestMapping("/client/penalty/getPenaltiesWithRoom")
-	@ResponseBody
-	public ResultData<List<Penalty>> getPenaltiesWithRoom() {
-		return penaltyService.getPenaltiesWithRoom();
-	}
-	
-	@RequestMapping("/client/penalty/getPenaltyWithRoomAndMoney")
-	@ResponseBody
-	public ResultData<Penalty> getPenaltyWithRoomAndMoney(Integer id) {
-		if (Util.isEmpty(id)) {
-			return ResultData.from("F-nullException", "id를 입력해주세요");
-		}
-		return penaltyService.getPenaltyWithRoomAndMoney(id);
-	}
-	
-	@RequestMapping("/client/penalty/getPenaltiesWithRoomAndMoney")
-	@ResponseBody
-	public ResultData<List<Penalty>> getPenaltiesWithRoomAndMoney() {
-		return penaltyService.getPenaltiesWithRoomAndMoney();
 	}
 	
 }

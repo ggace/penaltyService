@@ -41,6 +41,32 @@
 
 </div>
 
+<script defer>
+var nowZoom = 100;
+function zoomIn() {   // 화면크기확대
+	   nowZoom = nowZoom + 50;
+	   if(nowZoom >= 200) nowZoom = 200;   // 화면크기 최대 확대율 200%
+	   zooms();
+	   console.log("zoom in")
+	}
+function zooms() {
+	   document.body.style.zoom = nowZoom + "%";
+	   if(nowZoom == 70) {
+	      alert("더 이상 축소할 수 없습니다.");   // 화면 축소율이 70% 이하일 경우 경고창
+	   }
+	   if(nowZoom == 200) {
+	      alert("더 이상 확대할 수 없습니다.");   // 화면 확대율이 200% 이상일 경우 경고창
+	   }
+	}
+//alert(window.outerHeight+ " "+ window.outerWidth)
+
+if(window.outerWidth < 600){
+	zoomIn()
+}
+
+</script>
+
+
 <script>
 	var param = {loginId: $("#loginId").val(), loginPw: $("#loginPw").val()};
 	function doLogin(){
@@ -48,7 +74,7 @@
 		
 		
 		$.ajax({
-			url: "/client/user/login",
+			url: "/admin/user/login",
 			async: true,
 			type: 'POST',
 			data: param,

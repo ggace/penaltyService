@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.min.kim.dao.UserDao;
 import com.min.kim.dto.ResultData;
 import com.min.kim.dto.User;
+import com.min.kim.util.Util;
 
 @Service
 public class UserService {
@@ -31,7 +32,7 @@ public class UserService {
 			return ResultData.from("F-nullException", "존재하지 않는 아이디 입니다.");
 		}
 		
-		if(!loginPw.equals(user.getLoginPw())) {
+		if(!Util.encoding(loginPw).equals(user.getLoginPw())) {
 			return ResultData.from("F-nullException", "비밀번호가 일치하지 않습니다.");
 		}
 		
@@ -44,7 +45,7 @@ public class UserService {
 	}
 
 	public ResultData join(String loginId, String loginPw, String email, String nickname) {
-		userDao.join(loginId, loginPw, email, nickname);
+		userDao.join(loginId, Util.encoding(loginPw), email, nickname);
 		return ResultData.from("S-1", "회원가입되었습니다.");
 	}
 	

@@ -1,9 +1,7 @@
 package com.min.kim.controller;
 
-import java.util.List;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,25 +21,35 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@RequestMapping("/client/user/getUser")
+	@RequestMapping("/admin/user/getUser")
 	@ResponseBody
-	ResultData<User> getUser(Integer id){
+	ResultData<User> getUser(Integer id, HttpServletRequest request){
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if((Integer)(request.getAttribute("loginedId")) != 1) {
+			return null;
+		}
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
+		}
+		
 		if(Util.isEmpty(id)) {
 			return ResultData.from("F-nullException", "id를 입력해주세요");
 		}
 		return userService.getUser(id);
 	}
 	
-	@RequestMapping(value="/client/user/login", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/user/login", method = RequestMethod.POST)
 	@ResponseBody
-	ResultData<Integer> login(String loginId, String loginPw, HttpSession session){
-		Integer loginedId = (Integer) session.getAttribute("loginedId");
-		
-		System.out.printf("%s %s\n", loginId, loginPw);
-		
-		if(loginedId != null) {
+	ResultData<Integer> login(String loginId, String loginPw, HttpSession session, HttpServletRequest request){
+		if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}
+		if((boolean)(request.getAttribute("isLogined"))) {
 			return ResultData.from("F-logined", "로그인 상태입니다.");
 		}
+		
 		if(Util.isEmpty(loginId)) {
 			return ResultData.from("F-nullException", "loginId를 입력해주세요");
 		}
@@ -58,26 +66,29 @@ public class UserController {
 		return ResultData.from(loginedUserRd.getResultCode(), loginedUser.getNickname() + "님 환영합니다.", loginedUserRd.getDataName(), loginedUser.getId());
 	}
 	
-	@RequestMapping("/client/user/logout")
+	@RequestMapping("/admin/user/logout")
 	@ResponseBody
-	ResultData logout(HttpSession session){
-		
-		Integer loginedId = (Integer) session.getAttribute("loginedId");
-		if(loginedId == null) {
-			return ResultData.from("F-notlogined", "로그인 상태가 아닙니다.");
+	ResultData logout(HttpSession session, HttpServletRequest request){
+		/*if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}*/
+		if(!(boolean)(request.getAttribute("isLogined"))) {
+			return ResultData.from("F-logined", "로그인 상태가 아닙니다.");
 		}
+		
 		
 		ResultData logoutedId = userService.logout((HttpSession) session);
 		
 		return logoutedId;
 	}
 	
-	@RequestMapping("/client/user/join")
+	@RequestMapping("/admin/user/join")
 	@ResponseBody
-	ResultData join(HttpSession session, String loginId, String loginPw, String nickname, String email){
-		
-		Integer loginedId = (Integer) session.getAttribute("loginedId");
-		if(loginedId != null) {
+	ResultData join(HttpSession session, String loginId, String loginPw, String nickname, String email, HttpServletRequest request){
+		/*if((boolean)(request.getAttribute("isDirectAccess"))) {
+			return null;
+		}*/
+		if((boolean)(request.getAttribute("isLogined"))) {
 			return ResultData.from("F-logined", "로그인 상태입니다.");
 		}
 		

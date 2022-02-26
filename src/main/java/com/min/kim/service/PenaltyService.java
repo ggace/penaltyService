@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.min.kim.dao.MoneyDao;
 import com.min.kim.dao.PenaltyDao;
-import com.min.kim.dao.PenaltyInRoomDao;
 import com.min.kim.dto.Penalty;
 import com.min.kim.dto.ResultData;
 
@@ -16,12 +15,11 @@ public class PenaltyService {
 
 	private PenaltyDao penaltyDao;
 	private MoneyDao moneyDao;
-	private PenaltyInRoomDao penaltyInRoomDao;
-
-	public PenaltyService(PenaltyDao penaltyDao, MoneyDao moneyDao, PenaltyInRoomDao penaltyInRoomDao) {
+	
+	public PenaltyService(PenaltyDao penaltyDao, MoneyDao moneyDao) {
 		this.penaltyDao = penaltyDao;
 		this.moneyDao = moneyDao;
-		this.penaltyInRoomDao = penaltyInRoomDao;
+		
 	}
 
 	public ResultData<List<Penalty>> getPenalties() {
@@ -50,7 +48,7 @@ public class PenaltyService {
 		return ResultData.from("S-1", "요금과 그에 따른 돈입니다.", "penalty", penalty);
 	}
 
-	public ResultData<Object> insertPenalty(int roomId, String content, int money) {
+	public ResultData<Object> insertPenalty(String content, int money) {
 
 		Integer moneyId = moneyDao.getMoneyIdByMoney(money);
 		int type = 1;
@@ -63,10 +61,7 @@ public class PenaltyService {
 			type = 0;
 		}
 
-		penaltyDao.insertPenalty(content, moneyId, type);
-		int insertedPenaltyId = penaltyDao.getLastID();
-		
-		penaltyInRoomDao.insertRow(insertedPenaltyId, roomId);
+		penaltyDao.insertPenalty(content.trim(), moneyId, type);
 		
 		return ResultData.from("S-1", "요금이 추가되었습니다.");
 	}
@@ -99,28 +94,8 @@ public class PenaltyService {
 				type = 0;
 			}
 		}
-		penaltyDao.updatePenalty(id, content, moneyId, type);
+		penaltyDao.updatePenalty(id, content.trim(), moneyId, type);
 		return ResultData.from("S-1", "요금이 수정되었습니다.");
-	}
-
-	public ResultData<Penalty> getPenaltyWithRoom(Integer id) {
-		Penalty penalty = penaltyDao.getPenaltyWithRoom(id);
-		return ResultData.from("S-1", "요금 종류입니다.", "penalty", penalty);
-	}
-
-	public ResultData<List<Penalty>> getPenaltiesWithRoom() {
-		List<Penalty> penalties = penaltyDao.getPenaltiesWithRoom();
-		return ResultData.from("S-1", "요금 종류들입니다.", "penalties", penalties);
-	}
-
-	public ResultData<Penalty> getPenaltyWithRoomAndMoney(Integer id) {
-		Penalty penalty = penaltyDao.getPenaltyWithRoomAndMoney(id);
-		return ResultData.from("S-1", "요금 종류입니다.", "penalty", penalty);
-	}
-
-	public ResultData<List<Penalty>> getPenaltiesWithRoomAndMoney() {
-		List<Penalty> penalties = penaltyDao.getPenaltiesWithRoomAndMoney();
-		return ResultData.from("S-1", "요금 종류들입니다.", "penalties", penalties);
 	}
 
 }

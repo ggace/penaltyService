@@ -28,6 +28,8 @@
 <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
+<link rel="stylesheet" href="/script/common.css" />
+
 <!-- sidebar -->
 <script defer="defer">
 	function w3_open() {
@@ -39,6 +41,7 @@
 	  document.getElementById("mySidebar").style.display = "none";
 	}
 	
+	
 </script>
 
 <!-- addpopup -->
@@ -46,6 +49,11 @@
 #popup_layer {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4);} 
 /*팝업 박스*/
 .popup_box{position: relative;top:50%;left:50%; width:550px;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+
+@media(max-height:850px){
+	.popup_box{position: relative;top:50%;left:50%; width:100%;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+}
+
 /*컨텐츠 영역*/
 .popup_box .popup_cont {padding:50px;line-height:1.4rem;font-size:14px;word-break: break-word;}
 .popup_box .popup_cont h2 {padding:15px 0;color:#333;margin:0;}
@@ -55,21 +63,16 @@
 .popup_box .popup_btn a {position: relative; display: table-cell; height:70px; color:#fff; font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#102c5c;}
 .popup_box .popup_btn a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
 .popup_box .popup_btn a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
-.popup_box .popup_btn a.close_day {background:#5d5d5d;}
+
 .popup_box .popup_btn a.close_day:before, .popup_box .popup_btn a.close_day:after{display:none;}
 /*오버레이 뒷배경*/
 .popup_overlay{position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);} 
 </style>
 
 
+
 <script type="text/javascript" >
 
-$(function(){
-	$(".popup_box").draggable({containment:'parent', scroll:false}); // 레이어 팝업 창 드래그 가능
-	//{containment:'parent', scroll:false} 화면 영역 밖으로 드래그 안됌.
-    document.getElementById("popup_layer").style.display = "block";            
-	
-	});
 
 //열기
 function openPop() { 
@@ -80,12 +83,31 @@ function openPop() {
 function closePop() { 
 	document.getElementById("popup_layer").style.display = "none";
 }
-$(function(){
-	$(".popup_box").draggable({containment:'parent', scroll:false}); // 레이어 팝업 창 드래그 가능
+
+</script>
+
+<script type="text/javascript">
+function enterRoom(){
+	param = {roomId: $("#roomId").val(), pw: $("#roomPw").val()};
 	
-                
 	
-	});
+	$.ajax({
+		url: "/admin/room/enterRoom",
+		async: true,
+		data: param,
+		dataType: 'json',
+		success: function(json) {
+			alert(json.msg);
+			if(json.success){
+				location.reload();
+			}
+			else{
+				$("roomPw").val("");
+			}
+		}
+	})
+}
+
 </script>
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -102,7 +124,7 @@ $(function(){
 	  
 	  
 	</div>
-	<header class="h-20 pt-2 border-b border-gray-400" style="position: fixed;  top: 0; left: 0;  height: 100px;  width: 100%;  background-color: #f4f4f4;">
+	<header class="h-20 pt-2 border-b border-gray-400" style="position: fixed;  top: 0; left: 0;  height: 100px;  width: 100%;  background-color: #cce6ff;">
 		<section class="flex h-20 mx-5 items-center block">
 			<button class="btn btn-circle btn-ghost" onclick="w3_open()" >
 		      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">           
@@ -116,7 +138,8 @@ $(function(){
 			
 			<img src="/img/logo.png" class="h-16  px-3" alt="" />
 			
-			<h1 style="font-family: 'Product Sans',Arial,Helvetica,sans-serif;" class="text-xl text-gray-500 ">난 너의 벌금을 안다.</h1>
+			<h1 style="font-family: Vitro_core" class="text-xl text-gray-500 ">I lCnow Your Penalty</h1>
+			<!-- <h1 style="font-family: Vitro_core" class="text-xl text-gray-500 ">ilcylo</h1> -->
 			
 			<div class="flex-grow"></div>
 			
@@ -139,18 +162,40 @@ $(function(){
 	      <!--팝업 컨텐츠 영역-->
 	      <div class="popup_cont">
 	          <h2>Write the room's id and pw</h2>
-	          id : <input type="input"/><br>
-			  pw : <input type="password"/>
+	          id : <input id="roomId" type="input"/><br>
+			  pw : <input id="roomPw" type="password"/>
 	      </div>
 	      <!--팝업 버튼 영역-->
 	      <div class="popup_btn">
 	          
-	          <!-- <a id="chk_today" href="javascript:closeToday();" class="close_day">Do not open for 7 days</a>-->
-	          <a href="javascript:closePop();">Close</a>
+	          <a href="javascript:enterRoom()" class="close_day">Enter</a>
+	          <a href="javascript:closePop();" style="background-color: gray">Close</a>
 	      </div>
 	  </div>
 	</div>
 	<div class="my-3 h-20"></div>
+	
+	<script type="text/javascript">document.getElementById("popup_layer").draggable = true</script>
+	
+	<script type="text/babel">
+	fetch("/admin/room/getRoomByUserId")
+	.then(res => res.json())
+	.then(
+    	(result) => {
+      		const elementSideBar = result.data.map((room) => {
+				return <a href="#" class="w3-bar-item w3-button truncate">{room.title} - {room.adminName}</a>
+			});
+			
+			const sideBarRoot = document.getElementById('sidebarRoot');				
+			ReactDOM.render(<div style={{display: "flex", flexWrap: "wrap"}}>{elementSideBar}</div>, sideBarRoot);
+		},
+    // 주의: 컴포넌트에 있는 실제 버그로 인해 발생한 예외를
+    // 놓치지 않고 처리하기 위해서는
+    // catch() 블록보다는 여기서 에러를 다뤄주는 게 중요합니다.
+    (error) => {
+     	} 	
+  	)
+	</script>
 	
 	
 	

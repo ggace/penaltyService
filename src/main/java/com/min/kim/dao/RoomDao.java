@@ -20,7 +20,7 @@ public interface RoomDao {
 
 	public void deleteRoom(int id);
 
-	public void updateRoom(int id, String title, Integer adminId);
+	public void updateRoom(int id, String title);
 
 	public int getLastId();
 
@@ -33,5 +33,13 @@ public interface RoomDao {
 	public List<Room> getRoomsWithAdmin();
 
 	public List<Room> getRoomsByUserId(Integer userId);
+
+	public int checkRoomMember(int userId, int roomId);
+
+	public Room getRoomWithAdminInfo(Integer id);
+	
+	public boolean checkUserInRoom(int userId, int roomId);
+
+	public boolean checkUserAdminInRoom(int userId, int roomId);
 
 }

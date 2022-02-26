@@ -1,0 +1,51 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.min.kim.dao.LogDao">
+	<select id="getLogsInRoom" resultType="Log">
+		SELECT *
+		FROM `log`
+		WHERE roomId=#{roomId}
+	</select>
+	
+	<insert id="insertLog">
+		INSERT INTO `log`
+		SET userId = #{userId},
+		roomId = #{roomId},
+		penaltyId = #{penaltyId},
+		regDate = NOW(),
+		updateDate = NOW()
+	</insert>
+	
+	<select id="getLastId" resultType="Integer">
+		SELECT id
+		FROM `log`
+		ORDER BY id DESC
+		LIMIT 1
+	</select>
+	
+	<select id="getLogsInRoomWithExtra" resultType="Log">
+		SELECT l.*, p.content, m.money, mem.nickname
+		FROM `log` AS l
+		JOIN `penalty` AS p
+		ON p.id = l.penaltyId
+		JOIN `money` AS m
+		ON p.moneyId = m.id
+		JOIN `member` AS mem
+		ON mem.id = l.userId
+		WHERE l.roomId = #{roomId}
+		ORDER BY id DESC
+	</select>
+	
+	<select id="getSumOfMoneyLogsInRoom" resultType="Log">
+		SELECT l.id, l.roomId, l.regDate, l.updateDate, SUM(m.money) AS sumOfMoney, mem.nickname
+		FROM `log` AS l
+		JOIN `penalty` AS p
+		ON p.id = l.penaltyId
+		JOIN `money` AS m
+		ON p.moneyId = m.id
+		JOIN `member` AS mem
+		ON mem.id = l.userId
+		WHERE l.roomId = #{roomId}
+		GROUP BY nickname
+	</select>
+</mapper>

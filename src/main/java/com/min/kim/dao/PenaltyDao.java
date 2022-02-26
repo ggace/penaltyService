@@ -25,12 +25,8 @@ public interface PenaltyDao {
 	
 	int getLastID();
 
-	Penalty getPenaltyWithRoom(Integer id);
+	List<Penalty> getPenaltiesByMoneyIdAndContent(Integer moneyId, String content);
 
-	List<Penalty> getPenaltiesWithRoom();
-
-	Penalty getPenaltyWithRoomAndMoney(Integer id);
-
-	List<Penalty> getPenaltiesWithRoomAndMoney();
+	
 
 }

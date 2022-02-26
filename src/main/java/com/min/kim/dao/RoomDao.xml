@@ -39,9 +39,7 @@
 	<update id="updateRoom">
 		UPDATE `room`
 		<set>
-			<if test="adminId != null and adminId != ''">
-				adminId =#{adminId},
-			</if>
+			
 			title=#{title},
 			updateDate = NOW()
 		</set> 
@@ -96,6 +94,47 @@
 		ON m2.id = r.adminId
 		WHERE m.id = #{userId};
 	</select>
-	 
 	
+	<select id="checkRoomMember" resultType="Integer">
+		SELECT COUNT(r.id)
+		FROM `member` AS  m
+		JOIN `roomMember` AS rm
+		ON m.id = rm.memberId
+		JOIN `room` AS r
+		ON r.id = rm.roomId
+		JOIN `member` AS m2
+		ON m2.id = r.adminId
+		WHERE m.id = #{userId}
+		AND r.id = #{roomId};
+	</select>
+	
+	<select id="getRoomWithAdminInfo" resultType="Room">
+		SELECT r.*, m2.nickname AS adminName
+		FROM `member` AS  m
+		JOIN `roomMember` AS rm
+		ON m.id = rm.memberId
+		JOIN `room` AS r
+		ON r.id = rm.roomId
+		JOIN `member` AS m2
+		ON m2.id = r.adminId
+		WHERE r.id = #{id}
+		LIMIT 1;
+	</select>
+	
+	<select id="checkUserInRoom" resultType="boolean">
+		SELECT IF(COUNT(memberId) > 0, 1, 0) AS isMember
+		FROM `roomMember`
+		WHERE roomId = #{roomId}
+		AND memberId = #{userId}
+	</select>
+	 
+	 <select id="checkUserAdminInRoom" resultType="boolean">
+		SELECT IF(COUNT(m.memberId) > 0, 1, 0) AS isAdmin
+		FROM `roomMember` AS m
+		JOIN `room` AS r
+		ON r.id = m.roomId
+		WHERE roomId = 1185
+		AND memberId = 2
+		AND r.adminId = m.memberId
+	</select>
 </mapper>

@@ -63,40 +63,11 @@
 		LIMIT 1
 	</select>
 	
-	<select id="getPenaltyWithRoom" resultType="Penalty">
-		SELECT P.*, R.roomId
-		FROM penalty P
-		JOIN penaltyInRoom R
-		ON P.id = R.penaltyId
-		WHERE P.id = #{id}
-	</select>
-	
-	<select id="getPenaltiesWithRoom" resultType="Penalty">
-		SELECT P.*, R.roomId
-		FROM penalty P
-		JOIN penaltyInRoom R
-		ON P.id = R.penaltyId
-		ORDER BY id DESC
-	</select>
-	
-	<select id="getPenaltyWithRoomAndMoney" resultType="Penalty">
-		SELECT P.*, M.money, R.roomId
-		FROM penalty P
-		JOIN penaltyInRoom R
-		ON P.id = R.penaltyId
-		JOIN money M
-		ON P.moneyId = M.id
-		WHERE P.id = #{id}
-	</select>
-	
-	<select id="getPenaltiesWithRoomAndMoney" resultType="Penalty">
-		SELECT P.*, M.money, R.roomId
-		FROM penalty P
-		JOIN penaltyInRoom R
-		ON P.id = R.penaltyId
-		JOIN money M
-		ON P.moneyId = M.id
-		ORDER BY id DESC
+	<select id="getPenaltiesByMoneyIdAndContent" resultType="Penalty">
+		SELECT *
+		FROM `penalty`
+		WHERE moneyId=#{moneyId}
+		AND CONTENT=#{content}
 	</select>
 	
 </mapper>

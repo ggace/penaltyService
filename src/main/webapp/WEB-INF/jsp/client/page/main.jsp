@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="메인 페이지" />
-<%@include file="../client/common/header.jspf" %>
+<%@include file="../../client/common/header.jspf" %>
+
+
 
 
 
@@ -12,12 +14,12 @@
 
 <script type="text/babel">
 	
-	fetch("/client/room/getRoomByUserId")
+	fetch("/admin/room/getRoomByUserId")
 		.then(res => res.json())
 		.then(
         	(result) => {
           		const elementMain = result.data.map((room) => {
-					return <Room title={room.title} adminName={room.adminName}></Room>
+					return <Room title={room.title} adminName={room.adminName} roomId={room.id}></Room>
 				});
 				const elementSideBar = result.data.map((room) => {
 					return <a href="#" class="w3-bar-item w3-button truncate">{room.title} - {room.adminName}</a>
